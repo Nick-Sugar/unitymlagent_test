@@ -9,8 +9,9 @@ public class life : MonoBehaviour
     public float Thirst = 100;//のどの渇き
 
     float timer;
-    float stamina_timer = 10.0f;
-    float Thirst_timer = 5.0f;
+    float stamina_damage_timer = 10.0f;
+    float Thirst_damage_timer = 5.0f;
+    float Thirst_timer = 10.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -33,11 +34,11 @@ public class life : MonoBehaviour
         {
             if (stamina <= 0)
             {
-                stamina_timer -= Time.deltaTime;
-                if (stamina_timer <= 0)
+                stamina_damage_timer -= Time.deltaTime;
+                if (stamina_damage_timer <= 0)
                 {
                     lifes--;
-                    stamina_timer = 10.0f;
+                    stamina_damage_timer = 10.0f;
                 }
 
             }
@@ -45,15 +46,23 @@ public class life : MonoBehaviour
             {
                 if (Thirst <= 0)
                 {
-                    Thirst_timer -= Time.deltaTime;
-                    if (Thirst_timer <= 0)
+                    Thirst_damage_timer -= Time.deltaTime;
+                    if (Thirst_damage_timer <= 0)
                     {
                         stamina--;
-                        Thirst_timer = 5.0f;
+                        Thirst_damage_timer = 5.0f;
                     }
                 }
             }
         }
+        Thirst_timer -= Time.deltaTime;
+        if (Thirst_timer <= 0)
+        {
+            Debug.Log("喉が乾くかも");
+            Thirst--;
+            Thirst_timer = 10.0f;
+        }
+
     }
     public void heel_life(float lifeheelPoint)
     {
@@ -63,26 +72,30 @@ public class life : MonoBehaviour
     {
         stamina += staminaheelPoint;
     }
+    public void heel_Thirst(float ThirstheelPoint)
+    {
+        Thirst += ThirstheelPoint;
+    }
     void move()
     {
         if (Input.GetKey(KeyCode.W))
         {
-            this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, 1), ForceMode.Impulse);
+            this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, 0.5f), ForceMode.Impulse);
             //this.gameObject.transform.position += new Vector3(1,0,0);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, -1), ForceMode.Impulse);
+            this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, -0.5f), ForceMode.Impulse);
             //this.gameObject.transform.position += new Vector3(-1, 0, 0);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-1, 0, 0), ForceMode.Impulse);
+            this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(-0.5f, 0, 0), ForceMode.Impulse);
             //this.gameObject.transform.position += new Vector3(0, 0, 1);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(1, 0, 0), ForceMode.Impulse);
+            this.gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0.5f, 0, 0), ForceMode.Impulse);
             //this.gameObject.transform.position += new Vector3(0, 0, -1);
         }
     }
